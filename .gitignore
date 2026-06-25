@@ -1,0 +1,8 @@
+/target/
+
+.metadata
+.settings
+.idea
+
+chromedriver
+chromedriver.exe
