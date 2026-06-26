@@ -1,4 +1,4 @@
-name: Gerar Executável EXE
+name: Gerar Executável
 
 on:
   push:
@@ -6,42 +6,26 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest   # só Windows gera .exe
-
+    strategy:
+      matrix:
+        os: [windows-latest, macos-latest]   # ou ubuntu-latest, se quiser Linux
+    runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout do código
         uses: actions/checkout@v4
 
-      - name: Instalar WiX Toolset
-        run: |
-          choco install wixtoolset -y
-          echo "C:\Program Files (x86)\WiX Toolset\bin" >> $env:GITHUB_PATH
-
-      - name: Configurar JDK 17 (Oracle)
+      - name: Configurar JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: '17'
-          distribution: 'oracle'   # Oracle JDK inclui o jpackage
+          distribution: 'temurin'
           cache: maven
 
-      - name: Compilar e gerar fat JAR
+      - name: Compilar e empacotar com Maven
         run: mvn clean package
 
-      - name: Gerar .exe com jpackage
-        run: |
-          # Encontra o nome do JAR com dependências
-          $jarFile = Get-ChildItem -Path target\*-jar-with-dependencies.jar | Select-Object -First 1
-          jpackage --type exe `
-                   --input target/ `
-                   --name RoboBarueri `
-                   --main-jar $jarFile.Name `
-                   --main-class robo.barueri.Main `
-                   --dest output/ `
-                   --win-console   # opcional: mostra console para ver logs
-        shell: pwsh
-
-      - name: Upload do .exe
+      - name: Fazer upload do JAR
         uses: actions/upload-artifact@v4
         with:
-          name: robo-barueri-exe
-          path: output/*.exe
+          name: robo-barueri-${{ matrix.os }}   # nome único por SO
+          path: target/*.jar
