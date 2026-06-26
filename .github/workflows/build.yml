@@ -1,19 +1,31 @@
-runs-on: windows-latest
+name: Gerar Executável
 
-steps:
-  - uses: actions/checkout@v4
-  - name: Setup JDK
-    uses: actions/setup-java@v4
-    with:
-      java-version: '17'
-      distribution: 'temurin'
-  - name: Build JAR
-    run: mvn clean package
-  - name: Gerar EXE com jpackage
-    run: |
-      jpackage --type exe --input target/ --name RoboBarueri --main-jar meuprojeto-1.0-jar-with-dependencies.jar --main-class robo.barueri.Main
-  - name: Upload EXE
-    uses: actions/upload-artifact@v4
-    with:
-      name: executavel-exe
-      path: RoboBarueri.exe
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [windows-latest, macos-latest]   # ou ubuntu-latest, se quiser Linux
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Configurar JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Compilar e empacotar com Maven
+        run: mvn clean package
+
+      - name: Fazer upload do JAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: robo-barueri-${{ matrix.os }}   # nome único por SO
+          path: target/*.jar
