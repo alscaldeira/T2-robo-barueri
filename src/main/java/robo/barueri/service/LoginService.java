@@ -13,6 +13,8 @@ import robo.barueri.service.RoboBarueriService.RegistroNF;
 class LoginService {
 
 	static WebDriver logarPrefeituraBarueri(RegistroNF registroNf) {
+		// System.setProperty("webdriver.chrome.driver", "/Users/alscaldeira/Workspaces/T2/robo_barueri/chromedriver");
+
 		WebDriverManager.chromedriver().setup();
 		WebDriver driver = new ChromeDriver();
 		driver.manage().window().maximize();

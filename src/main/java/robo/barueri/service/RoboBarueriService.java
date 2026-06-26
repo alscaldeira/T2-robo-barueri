@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.DataFormatter;
+import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -268,7 +270,9 @@ public class RoboBarueriService {
 			String razaoTomador = row.getCell(colRazaoTomador).toString();
 			String cnpjTomador = row.getCell(colCnpjTomador).toString();
 			String lc116 = row.getCell(colLc116).toString();
-			String valorServico = row.getCell(colValorServico).toString();
+			// String valorServico = new DataFormatter().formatCellValue(row.getCell(colValorServico));
+			Double valorServicoDouble = row.getCell(colValorServico).getNumericCellValue();
+			String valorServico = String.format("%.2f", valorServicoDouble).replace('.', ',');
 			String serieRps = row.getCell(colSerieRps) != null ? row.getCell(colSerieRps).toString() : "";
 			String cnpjPrestador = row.getCell(colCnpjPrestador).toString();
 			String razaoPrestador = row.getCell(colRazaoPrestador).toString();

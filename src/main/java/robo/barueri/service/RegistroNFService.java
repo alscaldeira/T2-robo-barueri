@@ -52,10 +52,10 @@ class RegistroNFService {
 				wait.until(ExpectedConditions.visibilityOfElementLocated(
 						By.xpath("//*[@id=\"ContentPlaceHolder1_wucContribuinte_tblDadosContrib\"]/div[5]/div[2]")));
 				driver.findElement(By.xpath("//*[@id=\"list-item\"]/li[16]/a")).click();
-				
+
 //				driver.findElement(By.xpath("//*[@id=\"ContentPlaceHolder1_ibtnLocalizar\"]")).click();
 
-				String anoEmissao = String.valueOf(registroNf.getDataEmissao().getYear());
+				String anoEmissao = String.valueOf(notaFiscal.getDataEmissao().getYear());
 				wait.until(ExpectedConditions
 						.visibilityOfElementLocated(By.xpath("//*[@id=\"ContentPlaceHolder1_drpAnoCompetencia\"]")));
 				WebElement opcaoAnoEmissao = driver.findElement(
@@ -65,14 +65,14 @@ class RegistroNFService {
 
 				sleep(2000);
 
-				String mesEmissao = mapMeses.get(registroNf.getDataEmissao().getMonth().getValue());
+				String mesEmissao = mapMeses.get(notaFiscal.getDataEmissao().getMonth().getValue());
 				wait.until(ExpectedConditions
 						.visibilityOfElementLocated(By.xpath("//*[@id='ContentPlaceHolder1_drpMesCompetencia']")));
 				WebElement opcaoMesEmissao = driver.findElement(
 						By.xpath("//*[@id='ContentPlaceHolder1_drpMesCompetencia']//option[contains(text(), '"
 								+ mesEmissao + "')]"));
 				opcaoMesEmissao.click();
-				
+
 				wait.until(ExpectedConditions
 						.elementToBeClickable(By.xpath("//*[@id='ContentPlaceHolder1_txtSerieDoc']")));
 				driver.findElement(By.xpath("//*[@id='ContentPlaceHolder1_txtSerieDoc']"))
@@ -82,7 +82,7 @@ class RegistroNFService {
 
 				wait.until(ExpectedConditions
 						.visibilityOfElementLocated(By.xpath("//*[@id=\"ContentPlaceHolder1_txtDiaEmissao\"]")));
-				String diaEmissao = String.valueOf(registroNf.getDataEmissao().getDayOfMonth());
+				String diaEmissao = String.valueOf(notaFiscal.getDataEmissao().getDayOfMonth());
 				driver.findElement(By.xpath("//*[@id=\"ContentPlaceHolder1_txtDiaEmissao\"]")).sendKeys(diaEmissao);
 
 				driver.findElement(By.xpath("//*[@id='ContentPlaceHolder1_txtValor']"))
@@ -97,27 +97,27 @@ class RegistroNFService {
 				sleep(4000);
 				driver.findElement(By.xpath("//*[@id='ContentPlaceHolder1_txtDocPrestador']")).sendKeys(notaFiscal.getCnpjPrestador());
 				driver.findElement(By.xpath("//*[@id='ContentPlaceHolder1_btnBuscaPresServ']")).click();
-				
+
 				sleep(1500);
-				
+
  				String razaoEncontrado = driver.findElement(By.xpath("//*[@id=\"ContentPlaceHolder1_txtNomePrestador\"]")).getAttribute("value");
  				if(razaoEncontrado != null && !razaoEncontrado.equals(notaFiscal.getRazaoPrestador())) {
  					StatusService.getInstance().gravarMensagemStatus("Concluído porém razão social não é compatível", linha, colStatusProcessamento);
  				}
-				
+
 				verificarAlerta(driver, linha, colStatusProcessamento);
-				
+
 				if("10.01".equals(notaFiscal.getLc116()) || "10.02".equals(notaFiscal.getLc116())) {
 					boolean aliquotaEm2Porcento = !driver.findElements(By.xpath("//*[@id=\"ContentPlaceHolder1_grdResumoEscritura\"]/tbody/tr/td[6][text()='2,00']")).isEmpty(); // //*[@id="ContentPlaceHolder1_grdResumoEscritura"]/tbody/tr[2]/td[6]
 					if (aliquotaEm2Porcento) {
 						StatusService.getInstance().gravarMensagemStatus("Observação: alterar alíquota de 2%", linha, colStatusProcessamento);
 					}
 				}
-				
+
 				driver.findElement(By.xpath("//*[@id=\"ContentPlaceHolder1_ibtnConfirmarDoc\"]")).click();
-				
+
 				WebElement duplicidade = driver.findElement(By.xpath("//*[@id=\"ContentPlaceHolder1_divAlertaDuplicidadeDoc\"]/table/tbody/tr[1]/td/text()"));
-				String duplicidadeStyle = duplicidade.getAttribute("style"); 
+				String duplicidadeStyle = duplicidade.getAttribute("style");
 				if(duplicidade.isDisplayed() && !duplicidadeStyle.contains("display: none") && !duplicidadeStyle.contains("visibility: hidden")) {
 					StatusService.getInstance().gravarMensagemStatus("Duplicidade", linha, colStatusProcessamento);
 				} else {
@@ -128,7 +128,7 @@ class RegistroNFService {
 				StatusService.getInstance().gravarMensagemStatus("Erro ao preencher formulário", linha, colStatusProcessamento);
 			}
 
-			System.out.println("Concluído"); 
+			System.out.println("Concluído");
 		}
 	}
 
@@ -141,10 +141,10 @@ class RegistroNFService {
 				alertText = "Duplicidade";
 			}
 			StatusService.getInstance().gravarMensagemStatus(alertText, linha, colStatusProcessamento);
-			
+
 			Actions actions = new Actions(driver);
             actions.sendKeys(Keys.ENTER).build().perform();
-			
+
 		} catch (NoAlertPresentException e) {
 			StatusService.getInstance().gravarMensagemStatus("Concluído", linha, colStatusProcessamento);
 		} catch (UnhandledAlertException e) {
