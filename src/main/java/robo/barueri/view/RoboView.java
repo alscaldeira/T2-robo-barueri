@@ -25,6 +25,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import robo.barueri.exception.ErrorHandler;
 import robo.barueri.exception.GenericException;
 import robo.barueri.service.RoboBarueriService;
 
@@ -41,6 +42,13 @@ public class RoboView extends JFrame {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		Thread.setDefaultUncaughtExceptionHandler((thread, throwable) -> {
+			// Exibe a tela de erro e registra no log
+			ErrorHandler.handleError(throwable, null);
+			// Encerra a aplicação de forma controlada, se necessário
+			System.exit(1);
+		});
+
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -48,7 +56,7 @@ public class RoboView extends JFrame {
 					frame.setVisible(true);
 					frame.setResizable(false);
 				} catch (Exception e) {
-					e.printStackTrace();
+					ErrorHandler.handleError(e, null);
 				}
 			}
 		});
