@@ -19,14 +19,7 @@ class LoginService {
 		WebDriver driver = new ChromeDriver();
 		driver.manage().window().maximize();
 
-		// Verificar qual regra é utilizada hoje em dia para o usuário
-		String usuario = null;
-		if (registroNf.getCnpjTomador().equals("03.848.527/0001-69")) {
-			usuario = "05542999840";
-		} else {
-			usuario = "27514495819";
-		}
-		usuario = "38907501840";
+		String usuario = "38907501840";
 
 		driver.get(
 				"https://www.barueri.sp.gov.br/PMB/PortalServicos/WF/wfautenticacao.aspx?TpLogin=3&ReturnURL=/nfe/app/index.aspx");
