@@ -55,6 +55,15 @@ public class RoboView extends JFrame {
 					RoboView frame = new RoboView();
 					frame.setVisible(true);
 					frame.setResizable(false);
+					frame.addWindowListener(new java.awt.event.WindowAdapter() {
+						@Override
+						public void windowClosing(java.awt.event.WindowEvent e) {
+							// Fecha recursos (ex: WebDriver) se necessário
+							// RoboBarueriService.fecharRecursos(); // se tiver um método estático
+							System.exit(0);
+						}
+					});
+
 				} catch (Exception e) {
 					ErrorHandler.handleError(e, null);
 				}
