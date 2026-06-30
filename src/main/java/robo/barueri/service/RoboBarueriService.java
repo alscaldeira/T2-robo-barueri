@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -247,7 +248,7 @@ public class RoboBarueriService {
 			}
 
 			String numeroNf = null;
-			if (row.getCell(colNumeroNf).getCellType() == Cell.CELL_TYPE_NUMERIC) {
+			if (row.getCell(colNumeroNf).getCellType() == CellType.NUMERIC) {
 				BigDecimal bd = new BigDecimal(row.getCell(colNumeroNf).toString());
 				numeroNf = bd.toPlainString().toString();
 			} else {
@@ -259,7 +260,7 @@ public class RoboBarueriService {
 			}
 
 			LocalDate dataEmissao = null;
-			if (row.getCell(colDataEmissao).getCellType() == Cell.CELL_TYPE_NUMERIC) {
+			if (row.getCell(colDataEmissao).getCellType() == CellType.NUMERIC) {
 				DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MMM-yyyy");
 				dataEmissao = LocalDate.parse(row.getCell(colDataEmissao).toString(), format);
 			} else {
@@ -319,7 +320,7 @@ public class RoboBarueriService {
 
 			// Escrevendo a nota fiscal
 			String numeroNf;
-			if (row.getCell(ColNumeroNf).getCellType() == Cell.CELL_TYPE_NUMERIC) {
+			if (row.getCell(ColNumeroNf).getCellType() == CellType.NUMERIC) {
 				BigDecimal bd = new BigDecimal(row.getCell(ColNumeroNf).toString());
 				numeroNf = bd.toPlainString().toString();
 			} else {
@@ -335,7 +336,7 @@ public class RoboBarueriService {
 			// Escrevendo a data
 			wait.until(ExpectedConditions.elementToBeClickable(By.id("txtDiaEmissao")));
 			LocalDate data = null;
-			if (row.getCell(ColDataEmissao).getCellType() == Cell.CELL_TYPE_NUMERIC) {
+			if (row.getCell(ColDataEmissao).getCellType() == CellType.NUMERIC) {
 				DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MMM-yyyy");
 				data = LocalDate.parse(row.getCell(ColDataEmissao).toString(), format);
 			} else {
@@ -624,7 +625,7 @@ public class RoboBarueriService {
 			}
 
 			String numeroNf;
-			if (row.getCell(ColNumeroNf).getCellType() == Cell.CELL_TYPE_NUMERIC) {
+			if (row.getCell(ColNumeroNf).getCellType() == CellType.NUMERIC) {
 				BigDecimal d = new BigDecimal(row.getCell(ColNumeroNf).toString());
 				numeroNf = d.toPlainString().toString();
 			} else {
@@ -659,7 +660,7 @@ public class RoboBarueriService {
 			if (ColDataEmissao >= 0) {
 				if (row.getCell(ColDataEmissao) != null) {
 					LocalDate data = null;
-					if (row.getCell(ColDataEmissao).getCellType() == Cell.CELL_TYPE_NUMERIC) {
+					if (row.getCell(ColDataEmissao).getCellType() == CellType.NUMERIC) {
 						DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MMM-yyyy");
 						data = LocalDate.parse(row.getCell(ColDataEmissao).toString(), format);
 						if (!(data.getMonth() + "_" + data.getYear()).equals(mesAnoEmissao) && mesAnoEmissao != null) {
