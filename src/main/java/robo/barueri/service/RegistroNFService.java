@@ -1,5 +1,8 @@
 package robo.barueri.service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 
@@ -114,7 +117,18 @@ class RegistroNFService {
 					}
 				}
 
-				driver.findElement(By.xpath("//*[@id=\"ContentPlaceHolder1_ibtnConfirmarDoc\"]")).click();
+				String text = driver.findElement(By.xpath("//*[@id=\"ContentPlaceHolder1_ibtnConfirmarDoc\"]")).getText(); //.click();
+
+				Path filePath = Path.of("example.txt");
+
+				try {
+					// 3. Write directly to the file (creates file if missing, overwrites if existing)
+					Files.writeString(filePath, text);
+					System.out.println("File created and written successfully!");
+
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 
 				WebElement duplicidade = driver.findElement(By.xpath("//*[@id=\"ContentPlaceHolder1_divAlertaDuplicidadeDoc\"]/table/tbody/tr[1]/td/text()"));
 				String duplicidadeStyle = duplicidade.getAttribute("style");
